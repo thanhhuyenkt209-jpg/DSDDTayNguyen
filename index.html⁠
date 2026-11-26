@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảo Tàng Đáng Yêu - Động Vật Quý Hiếm Tây Nguyên</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts & FontAwesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pastelGreen: '#E2F0D9',
+            pastelMint: '#B8E0D2',
+            pastelYellow: '#FFF5BA',
+            pastelPink: '#FAD2E1',
+            pastelOrange: '#FFE5EC',
+            pastelCream: '#FFFDF9',
+            pastelDark: '#4A5568',
+            pastelSage: '#80B9AD'
+          },
+          fontFamily: {
+            comfortaa: ['Comfortaa', 'cursive'],
+            quicksand: ['Quicksand', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: #FFFDF9;
+      color: #4A5568;
+    }
+    h1, h2, h3, h4, .font-cute {
+      font-family: 'Comfortaa', cursive;
+    }
+    .floating-anim {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+    .heart-pop {
+      animation: heartPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes heartPop {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1) translateY(-30px); opacity: 0; }
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #FFFDF9; }
+    ::-webkit-scrollbar-thumb { background: #B8E0D2; border-radius: 20px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+
+  <!-- Floating Hearts Container -->
+  <div id="hearts-container" class="fixed inset-0 pointer-events-none z-50"></div>
+
+  <!-- Header Section -->
+  <header class="bg-pastelMint/40 backdrop-blur-md sticky top-0 z-40 border-b-4 border-pastelMint shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-4xl floating-anim">🍃</span>
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold text-emerald-800 tracking-wide">Trạm Rừng Xinh</h1>
+          <p class="text-xs md:text-sm text-emerald-600 font-semibold">Gặp gỡ & bảo vệ các bạn nhỏ Tây Nguyên 💚</p>
+        </div>
+      </div>
+      
+      <!-- Collect Badge Counters -->
+      <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-full shadow-inner border-2 border-pastelMint">
+        <span class="text-xl">🏆</span>
+        <span class="text-sm font-bold text-gray-700">Bộ Sưu Tập Badge: <span id="badge-count" class="text-emerald-600 font-extrabold">0</span>/7</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="max-w-6xl mx-auto px-4 pt-8 pb-4 text-center">
+    <div class="bg-gradient-to-r from-pastelYellow/60 via-pastelPink/40 to-pastelMint/50 p-6 md:p-10 rounded-3xl border-4 border-dashed border-pastelSage relative overflow-hidden shadow-lg">
+      <div class="absolute -top-4 -left-4 text-5xl opacity-30">🌸</div>
+      <div class="absolute -bottom-4 -right-4 text-5xl opacity-30">🌻</div>
+      
+      <span class="inline-block bg-white text-emerald-700 px-4 py-1.5 rounded-full text-xs font-bold shadow-sm mb-3 border border-emerald-200">
+        ✨ Góc Nhỏ Yêu Thương Sinh Thái
+      </span>
+      <h2 class="text-2xl md:text-4xl font-bold text-emerald-900 mb-3">Các Bạn Nhỏ Rừng Đại Ngàn Cần Chúng Ta!</h2>
+      <p class="max-w-2xl mx-auto text-sm md:text-base text-gray-600 leading-relaxed">
+        Tây Nguyên là ngôi nhà thân yêu của rất nhiều bạn động vật quý hiếm. Hãy cùng tìm hiểu đặc điểm siêu đáng yêu, sinh cảnh sống và gửi thật nhiều tình yêu thương đến các bạn ấy nhé!
+      </p>
+
+      <!-- Filter Tabs -->
+      <div class="flex flex-wrap justify-center gap-2 md:gap-3 mt-6" id="filter-buttons">
+        <button onclick="filterAnimals('all')" class="filter-btn active bg-emerald-600 text-white font-bold px-4 py-2 rounded-2xl text-xs md:text-sm shadow-md transition hover:scale-105">
+          🐾 Tất Cả (7)
+        </button>
+        <button onclick="filterAnimals('CR')" class="filter-btn bg-white text-red-500 border-2 border-red-300 font-bold px-4 py-2 rounded-2xl text-xs md:text-sm shadow-sm transition hover:scale-105">
+          🚨 Cực Kỳ Nguy Cấp (CR)
+        </button>
+        <button onclick="filterAnimals('EN')" class="filter-btn bg-white text-orange-500 border-2 border-orange-300 font-bold px-4 py-2 rounded-2xl text-xs md:text-sm shadow-sm transition hover:scale-105">
+          ⚠️ Nguy Cấp (EN)
+        </button>
+        <button onclick="filterAnimals('VU')" class="filter-btn bg-white text-yellow-600 border-2 border-yellow-300 font-bold px-4 py-2 rounded-2xl text-xs md:text-sm shadow-sm transition hover:scale-105">
+          ⚡ Sắp Nguy Cấp (VU)
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Grid Section -->
+  <main class="max-w-6xl mx-auto px-4 py-6 flex-grow">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="animals-grid">
+      <!-- Animal cards rendered by JS -->
+    </div>
+  </main>
+
+  <!-- Modal Detail -->
+  <div id="detail-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-pastelCream w-full max-w-2xl rounded-3xl border-4 border-pastelMint shadow-2xl overflow-hidden max-h-[90vh] flex flex-col transform transition-all">
+      <!-- Modal Header -->
+      <div class="bg-pastelMint/60 px-6 py-4 flex justify-between items-center border-b-2 border-pastelMint">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl" id="modal-icon">🌱</span>
+          <h3 class="text-xl font-bold text-emerald-900" id="modal-title">Tên Động Vật</h3>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white text-emerald-800 font-bold text-lg hover:bg-red-400 hover:text-white transition flex items-center justify-center shadow-sm">✕</button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-4" id="modal-body">
+        <!-- Content inserted dynamically -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-pastelYellow/40 px-6 py-3 border-t border-yellow-200 flex justify-between items-center">
+        <span class="text-xs text-gray-500 italic" id="modal-source">Nguồn tư liệu: IUCN Red List / WWF</span>
+        <button onclick="closeModal()" class="bg-emerald-600 text-white font-bold px-5 py-2 rounded-full text-sm shadow hover:bg-emerald-700 transition">Đóng lại ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-pastelMint/30 border-t-2 border-pastelMint py-6 text-center mt-12">
+    <p class="text-sm font-semibold text-emerald-800">
+      Trạm Rừng Xinh Tay Nguyen 💚 Dự án bảo tồn & nâng cao nhận thức cộng đồng
+    </p>
+    <p class="text-xs text-gray-500 mt-1">Dữ liệu tham chiếu từ Sách Đỏ Việt Nam, IUCN, WWF & Vietnam Forest Protection Department</p>
+  </footer>
+
+  <!-- JavaScript Logic -->
+  <script>
+    const ANIMALS = [
+      {
+        id: 'saola',
+        name: 'Sao La',
+        sciName: 'Pseudoryx nghetinhensis',
+        status: 'CR',
+        statusText: 'Cực Kỳ Nguy Cấp',
+        badgeColor: 'bg-red-100 text-red-600 border-red-300',
+        image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=600&q=80',
+        imgSource: 'Phỏng tạo minh họa loài / Unsplash (Photo: Duong Nhan)',
+        chibiIcon: '🦌',
+        shortDesc: 'Được mệnh danh là "Kỳ lân Châu Á", một trong những loài thú hiếm nhất thế giới.',
+        traits: 'Sừng dài thẳng tắp cân đối như 2 chiếc cọc nhọn. Trên mặt có các đốm trắng nổi bật đặc trưng.',
+        habitat: 'Rừng già nguyên sinh hẻo lánh, độ ẩm cao thuộc dãy Trường Sơn và vùng rìa Tây Nguyên.',
+        threats: 'Mắc bẫy săn bắt trộm thú rừng và suy giảm sinh cảnh sống do biến đổi rừng.',
+        likes: 128,
+        badgeUnlocked: false
+      },
+      {
+        id: 'voi',
+        name: 'Voi Châu Á',
+        sciName: 'Elephas maximus',
+        status: 'EN',
+        statusText: 'Nguy Cấp',
+        badgeColor: 'bg-orange-100 text-orange-600 border-orange-300',
+        image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=600&q=80',
+        imgSource: 'Unsplash (Photo: AJ), Đắk Lắk Elephant Protection',
+        chibiIcon: '🐘',
+        shortDesc: 'Biểu tượng văn hóa đại ngàn Tây Nguyên nhưng đàn voi rừng đang giảm nhanh đáng lo ngại.',
+        traits: 'Thân hình đồ sộ, tai nhỏ hơn voi Châu Phi, vòi thông minh linh hoạt để lấy thức ăn.',
+        habitat: 'Các khu bảo tồn và Vườn Quốc Gia Yok Đôn (Đắk Lắk), Chư Mom Ray.',
+        threats: 'Xung đột môi trường sống với con người, chia cắt hành lang di chuyển tự nhiên.',
+        likes: 254,
+        badgeUnlocked: false
+      },
+      {
+        id: 'chava',
+        name: 'Chà Vá Chân Xám',
+        sciName: 'Pygathrix cinerea',
+        status: 'CR',
+        statusText: 'Cực Kỳ Nguy Cấp',
+        badgeColor: 'bg-red-100 text-red-600 border-red-300',
+        image: 'https://images.unsplash.com/photo-1540573133985-778703474350?auto=format&fit=crop&w=600&q=80',
+        imgSource: 'WWF-Vietnam / Wikimedia Commons (Primate Conservation)',
+        chibiIcon: '🐒',
+        shortDesc: 'Loài linh trưởng đặc hữu của Việt Nam, được ví như "nữ hoàng các loài linh trưởng".',
+        traits: 'Bộ lông phối màu xám nhạt xinh xắn, khuôn mặt tròn cam nhạt cùng chòm râu quai nón trắng muốt.',
+        habitat: 'Rừng thường xanh Kon Ka Kinh (Gia Lai), Kon Tum và Quảng Nam.',
+        threats: 'Mất rừng nguyên sinh và nạn săn bắt trái phép.',
+        likes: 310,
+        badgeUnlocked: false
+      },
+      {
+        id: 'botot',
+        name: 'Bò Tót Đông Dương',
+        sciName: 'Bos gaurus laosiensis',
+        status: 'VU',
+        statusText: 'Sắp Nguy Cấp',
+        badgeColor: 'bg-yellow-100 text-yellow-700 border-yellow-300',
+        image: 'https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=600&q=80',
+        imgSource: 'Biodiversity Conservation / Wikimedia Commons',
+        chibiIcon: '🐂',
+        shortDesc: 'Loài bò rừng lớn nhất thế giới với vóc dáng dũng mãnh uy nghi.',
+        traits: 'Cơ bắp cuồn cuộn, lưng có gờ cao, 4 chân từ đầu gối xuống có lông màu trắng như đi tất.',
+        habitat: 'Vườn Quốc Gia Chư Yang Sin, Bidoup - Núi Bà và Yok Đôn.',
+        threats: 'Thu hẹp bãi cỏ tự nhiên và giao phối đồng huyết do đàn bị chia cắt.',
+        likes: 95,
+        badgeUnlocked: false
+      },
+      {
+        id: 'gauchot',
+        name: 'Gấu Chó',
+        sciName: 'Helarctos malayanus',
+        status: 'VU',
+        statusText: 'Sắp Nguy Cấp',
+        badgeColor: 'bg-yellow-100 text-yellow-700 border-yellow-300',
+        image: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80',
+        imgSource: 'FreePik Wildlife / Bear Conservation Asia',
+        chibiIcon: '🐻',
+        shortDesc: 'Loài gấu nhỏ nhất thế giới nhưng cực kỳ tinh nghịch và khéo léo.',
+        traits: 'Bộ lông đen mượt, trước ngực có vệt móng ngựa màu vàng cam xinh xắn, lưỡi rất dài.',
+        habitat: 'Rừng rậm nhiệt đới Tây Nguyên, thích sống trên cây high canopy.',
+        threats: 'Nạn bẫy bắt nuôi nhốt và khai thác mật gấu trái phép.',
+        likes: 188,
+        badgeUnlocked: false
+      },
+      {
+        id: 'vuonmavang',
+        name: 'Vượn Má Vàng Trung Bộ',
+        sciName: 'Nomascus gabriellae',
+        status: 'EN',
+        statusText: 'Nguy Cấp',
+        badgeColor: 'bg-orange-100 text-orange-600 border-orange-300',
+        image: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=600&q=80',
+        imgSource: 'International Primate Protection League (IPPL)',
+        chibiIcon: '🦧',
+        shortDesc: 'Ca sĩ của rừng xanh với tiếng hót vang vọng khắp tán rừng buổi bình minh.',
+        traits: 'Con đực lông đen tuyền với hai chòm má màu vàng tơ; con cái toàn thân màu vàng nhạt.',
+        habitat: 'Vườn Quốc Gia Bidoup - Núi Bà (Lâm Đồng), Chư Yang Sin.',
+        threats: 'Suy giảm tán rừng liên tục làm chia cắt đường đu cây.',
+        likes: 142,
+        badgeUnlocked: false
+      },
+      {
+        id: 'ho',
+        name: 'Hổ Đông Dương',
+        sciName: 'Panthera tigris corbetti',
+        status: 'CR',
+        statusText: 'Cực Kỳ Nguy Cấp',
+        badgeColor: 'bg-red-100 text-red-600 border-red-300',
+        image: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=600&q=80',
+        imgSource: 'Global Tiger Initiative / WWF Technical Report',
+        chibiIcon: '🐯',
+        shortDesc: 'Chúa tể rừng xanh Tây Nguyên, hiện đang được bảo vệ nghiêm ngặt tối đa.',
+        traits: 'Thân hình thon gọn dẻo dai, sọc đen hẹp và đậm trên nền lông vàng cam rực rỡ.',
+        habitat: 'Các khu vực rừng lõi cực kỳ hẻo lánh giáp biên giới Việt - Lào - Campuchia.',
+        threats: 'Suy giảm nguồn thú mồi tự nhiên và mất hành lang di chuyển sinh thái.',
+        likes: 420,
+        badgeUnlocked: false
+      }
+    ];
+
+    let unlockedBadgesCount = 0;
+
+    // Render Cards
+    function renderGrid(data) {
+      const grid = document.getElementById('animals-grid');
+      grid.innerHTML = data.map(item => `
+        <div class="bg-white rounded-3xl border-3 border-pastelMint p-4 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-2 flex flex-col justify-between relative group">
+          
+          <!-- Status Tag -->
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-2xl floating-anim">${item.chibiIcon}</span>
+            <span class="px-3 py-1 rounded-full text-xs font-bold border ${item.badgeColor}">
+              ${item.statusText}
+            </span>
+          </div>
+
+          <!-- Image Container -->
+          <div class="relative rounded-2xl overflow-hidden mb-3 aspect-video bg-pastelYellow/30 border border-pastelMint">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-xs text-white text-[10px] px-2 py-1 truncate">
+              📷 ${item.imgSource}
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div>
+            <h3 class="text-lg font-bold text-emerald-900">${item.name}</h3>
+            <p class="text-xs text-emerald-600 italic mb-2">${item.sciName}</p>
+            <p class="text-xs text-gray-600 line-clamp-2 mb-4">${item.shortDesc}</p>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="pt-2 border-t border-dashed border-pastelMint flex items-center justify-between">
+            <button onclick="popHeart(event, '${item.id}')" class="flex items-center gap-1.5 bg-pastelOrange hover:bg-pink-200 text-pink-600 font-bold px-3 py-1.5 rounded-full text-xs transition">
+              <span>❤️</span>
+              <span id="like-${item.id}">${item.likes}</span>
+            </button>
+            <button onclick="openModal('${item.id}')" class="bg-pastelMint hover:bg-emerald-300 text-emerald-900 font-bold px-4 py-1.5 rounded-full text-xs shadow-sm transition flex items-center gap-1">
+              <span>Xem bé này</span> ✨
+            </button>
+          </div>
+
+        </div>
+      `).join('');
+    }
+
+    // Filter Logic
+    function filterAnimals(status) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('bg-emerald-600', 'text-white');
+        btn.classList.add('bg-white');
+      });
+      event.target.classList.remove('bg-white');
+      event.target.classList.add('bg-emerald-600', 'text-white');
+
+      if (status === 'all') {
+        renderGrid(ANIMALS);
+      } else {
+        const filtered = ANIMALS.filter(a => a.status === status);
+        renderGrid(filtered);
+      }
+    }
+
+    // Heart Animation
+    function popHeart(e, id) {
+      const animal = ANIMALS.find(a => a.id === id);
+      if(animal) {
+        animal.likes++;
+        document.getElementById(`like-${id}`).innerText = animal.likes;
+      }
+
+      const heart = document.createElement('div');
+      heart.className = 'fixed text-2xl pointer-events-none heart-pop z-50';
+      heart.innerText = '💖';
+      heart.style.left = (e.clientX - 10) + 'px';
+      heart.style.top = (e.clientY - 20) + 'px';
+      
+      document.getElementById('hearts-container').appendChild(heart);
+      setTimeout(() => heart.remove(), 600);
+    }
+
+    // Modal Logic
+    function openModal(id) {
+      const item = ANIMALS.find(a => a.id === id);
+      if (!item) return;
+
+      // Unlock Badge
+      if(!item.badgeUnlocked) {
+        item.badgeUnlocked = true;
+        unlockedBadgesCount++;
+        document.getElementById('badge-count').innerText = unlockedBadgesCount;
+      }
+
+      document.getElementById('modal-icon').innerText = item.chibiIcon;
+      document.getElementById('modal-title').innerText = `${item.name} (${item.statusText})`;
+      document.getElementById('modal-source').innerText = `Nguồn ảnh & Dữ liệu: ${item.imgSource}`;
+
+      const body = document.getElementById('modal-body');
+      body.innerHTML = `
+        <div class="rounded-2xl overflow-hidden border-2 border-pastelMint max-h-60">
+          <img src="${item.image}" class="w-full h-full object-cover">
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-pastelMint shadow-sm space-y-3">
+          <div>
+            <h4 class="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-1">🌿 Special Traits (Đặc Điểm)</h4>
+            <p class="text-xs md:text-sm text-gray-700 leading-relaxed">${item.traits}</p>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-1">🏡 Habitat (Sinh Cảnh Sống)</h4>
+            <p class="text-xs md:text-sm text-gray-700 leading-relaxed">${item.habitat}</p>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-red-500 uppercase tracking-wider mb-1">⚠️ Major Threats (Mối Đe Dọa)</h4>
+            <p class="text-xs md:text-sm text-gray-700 leading-relaxed">${item.threats}</p>
+          </div>
+        </div>
+
+        <div class="bg-pastelYellow/50 p-3 rounded-xl border border-yellow-300 text-center text-xs font-semibold text-yellow-800">
+          🎉 Bạn vừa thu thập thành công Huy Hiệu Bảo Vệ bạn ${item.name}!
+        </div>
+      `;
+
+      document.getElementById('detail-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('detail-modal').classList.add('hidden');
+    }
+
+    // Initial Render
+    renderGrid(ANIMALS);
+  </script>
+</body>
+</html>
